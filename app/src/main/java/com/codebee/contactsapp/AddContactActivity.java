@@ -3,6 +3,7 @@ package com.codebee.contactsapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.DisplayMetrics;
-import android.util.Size;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -32,10 +32,10 @@ public class AddContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
 
         Intent intent = this.getIntent();
-        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.add_contact_constraint_layout);
+        ConstraintLayout constraintLayout = findViewById(R.id.add_contact_constraint_layout);
         mRevealAnimation = new RevealAnimation(constraintLayout, intent, this);
 
-        fieldsLayout = (LinearLayout) findViewById(R.id.add_contact_fields_layout);
+        fieldsLayout = findViewById(R.id.add_contact_fields_layout);
 
         saveContact();
 
@@ -58,16 +58,19 @@ public class AddContactActivity extends AppCompatActivity {
                     contact.setLName(((EditText) findViewById(R.id.add_contact_lname_text)).getText().toString().trim());
                     contact.setEmail(((EditText) findViewById(R.id.add_contact_email_text)).getText().toString().trim());
 
-                    if(!((EditText) findViewById(R.id.add_contact_mobile_text)).getText().toString().isEmpty()){
+                    if (!((EditText) findViewById(R.id.add_contact_mobile_text)).getText().toString().isEmpty()) {
                         contact.setMobile(Long.parseLong(((EditText) findViewById(R.id.add_contact_mobile_text)).getText().toString()));
                     }
 
-                    if(!((EditText) findViewById(R.id.add_contact_work_text)).getText().toString().isEmpty()){
+                    if (!((EditText) findViewById(R.id.add_contact_work_text)).getText().toString().isEmpty()) {
                         contact.setWork(Long.parseLong(((EditText) findViewById(R.id.add_contact_work_text)).getText().toString()));
                     }
 
                     if (fieldsLayout.findViewWithTag("custom_linearLayout_1") != null) {
-                        if(!((EditText) fieldsLayout.findViewWithTag("custom_linearLayout_1").findViewWithTag("custom_editText_1")).getText().toString().isEmpty()){
+                        if (!((EditText) fieldsLayout
+                                .findViewWithTag("custom_linearLayout_1")
+                                .findViewWithTag("custom_editText_1"))
+                                .getText().toString().isEmpty()) {
                             contact.setCustom1(Long.parseLong(
                                     ((EditText) fieldsLayout
                                             .findViewWithTag("custom_linearLayout_1")
@@ -78,7 +81,10 @@ public class AddContactActivity extends AppCompatActivity {
                     }
 
                     if (fieldsLayout.findViewWithTag("custom_linearLayout_2") != null) {
-                        if(!((EditText) fieldsLayout.findViewWithTag("custom_linearLayout_2").findViewWithTag("custom_editText_2")).getText().toString().isEmpty()){
+                        if (!((EditText) fieldsLayout
+                                .findViewWithTag("custom_linearLayout_2")
+                                .findViewWithTag("custom_editText_2"))
+                                .getText().toString().isEmpty()) {
                             contact.setCustom1(Long.parseLong(
                                     ((EditText) fieldsLayout
                                             .findViewWithTag("custom_linearLayout_2")
@@ -89,7 +95,10 @@ public class AddContactActivity extends AppCompatActivity {
                     }
 
                     if (fieldsLayout.findViewWithTag("custom_linearLayout_3") != null) {
-                        if(!((EditText) fieldsLayout.findViewWithTag("custom_linearLayout_3").findViewWithTag("custom_editText_3")).getText().toString().isEmpty()){
+                        if (!((EditText) fieldsLayout
+                                .findViewWithTag("custom_linearLayout_3")
+                                .findViewWithTag("custom_editText_3"))
+                                .getText().toString().isEmpty()) {
                             contact.setCustom1(Long.parseLong(
                                     ((EditText) fieldsLayout
                                             .findViewWithTag("custom_linearLayout_3")
@@ -100,11 +109,11 @@ public class AddContactActivity extends AppCompatActivity {
                     }
 
                     DatabaseHelper db = new DatabaseHelper(AddContactActivity.this);
-                    if(db.addData(contact)){
-                        Toast.makeText(getApplicationContext(),"Contact added successfully!",Toast.LENGTH_SHORT).show();
+                    if (db.addData(contact)) {
+                        Toast.makeText(getApplicationContext(), "Contact added successfully!", Toast.LENGTH_SHORT).show();
                         mRevealAnimation.unRevealActivity();
-                    }else{
-                        Toast.makeText(getApplicationContext(),"Unable to add contact!",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Unable to add contact!", Toast.LENGTH_LONG).show();
                     }
 
                 } else {
@@ -120,6 +129,7 @@ public class AddContactActivity extends AppCompatActivity {
 
     private void addMoreFields() {
         findViewById(R.id.add_contact_field_button).setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if (field_count <= 3) {
