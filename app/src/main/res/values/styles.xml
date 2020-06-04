@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AddContactTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#007BFF</item>
+        <item name="colorPrimaryDark">#007BFF</item>
+        <item name="colorAccent">#ffffff</item>
+    </style>
 </resources>
