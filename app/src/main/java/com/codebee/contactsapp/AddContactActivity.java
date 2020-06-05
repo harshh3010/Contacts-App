@@ -116,6 +116,8 @@ public class AddContactActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Unable to add contact!", Toast.LENGTH_LONG).show();
                     }
 
+                    db.close();
+
                 } else {
                     if (((EditText) findViewById(R.id.add_contact_fname_text)).getText().toString().trim().isEmpty())
                         ((EditText) findViewById(R.id.add_contact_fname_text)).setError("This field cannot be left empty.");

@@ -2,19 +2,39 @@ package com.codebee.contactsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private ContactAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recyclerView = findViewById(R.id.contacts_recycler_view);
+
+        displayContacts();
+
         addContact();
+    }
+
+    private void displayContacts(){
+        DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+        ArrayList<Contact> contacts = db.getData();
+        adapter = new ContactAdapter(contacts);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        db.close();
     }
 
     private void addContact(){
