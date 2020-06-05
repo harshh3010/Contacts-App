@@ -78,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             while (cursor.moveToNext()){
                 Contact contact = new Contact();
-                contact.setId(cursor.getInt(cursor.getColumnIndex(COL_1)));
+                contact.setId(cursor.getString(cursor.getColumnIndex(COL_1)));
                 contact.setFname(cursor.getString(cursor.getColumnIndex(COL_2)));
                 contact.setLName(cursor.getString(cursor.getColumnIndex(COL_3)));
                 contact.setMobile(cursor.getLong(cursor.getColumnIndex(COL_4)));
@@ -92,5 +92,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return contacts;
+    }
+
+    public boolean updateData(Contact contact){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_2,contact.getFname());
+        contentValues.put(COL_3,contact.getLName());
+        contentValues.put(COL_4,contact.getMobile());
+        contentValues.put(COL_5,contact.getWork());
+        contentValues.put(COL_6,contact.getEmail());
+        contentValues.put(COL_7,contact.getCustom1());
+        contentValues.put(COL_8,contact.getCustom2());
+        contentValues.put(COL_9,contact.getCustom3());
+        db.update(TABLE_NAME,contentValues,COL_1 + "=?",new String[]{contact.getId()});
+        return true;
     }
 }

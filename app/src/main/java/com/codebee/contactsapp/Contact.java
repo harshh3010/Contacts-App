@@ -3,7 +3,7 @@ package com.codebee.contactsapp;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
-    private int Id;
+    private String Id;
     private String Fname;
     private String LName;
     private long Mobile;
@@ -16,11 +16,11 @@ public class Contact implements Serializable {
     public Contact() {
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         Id = id;
     }
 
