@@ -2,10 +2,13 @@ package com.codebee.contactsapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -64,5 +67,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }else{
             return true;
         }
+    }
+
+    public ArrayList<Contact> getData(){
+
+        ArrayList<Contact> contacts = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
+        if(cursor.moveToFirst()){
+            while (cursor.moveToNext()){
+                Contact contact = new Contact();
+                contact.setId(cursor.getInt(cursor.getColumnIndex(COL_1)));
+                contact.setFname(cursor.getString(cursor.getColumnIndex(COL_2)));
+                contact.setLName(cursor.getString(cursor.getColumnIndex(COL_3)));
+                contact.setMobile(cursor.getLong(cursor.getColumnIndex(COL_4)));
+                contact.setWork(cursor.getLong(cursor.getColumnIndex(COL_5)));
+                contact.setEmail(cursor.getString(cursor.getColumnIndex(COL_6)));
+                contact.setCustom1(cursor.getLong(cursor.getColumnIndex(COL_7)));
+                contact.setCustom2(cursor.getLong(cursor.getColumnIndex(COL_8)));
+                contact.setCustom3(cursor.getLong(cursor.getColumnIndex(COL_9)));
+
+                contacts.add(contact);
+            }
+        }
+        return contacts;
     }
 }
