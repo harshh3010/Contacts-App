@@ -2,6 +2,7 @@ package com.codebee.contactsapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -13,8 +14,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactActivity extends AppCompatActivity {
 
@@ -44,7 +51,72 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.contact_menu_image).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(ContactActivity.this,v, Gravity.END);
+                menu.getMenuInflater().inflate(R.menu.menu_contact_options, menu.getMenu());
+
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.contact_option_edit : editContact();
+                            break;
+                            case R.id.contact_option_delete : deleteContact();
+                            break;
+                            case R.id.contact_option_share : shareContact();
+                            break;
+                        }
+                        return true;
+                    }
+                });
+
+                menu.show();
+            }
+        });
+
         exit();
+    }
+
+    private void deleteContact(){
+        DatabaseHelper db = new DatabaseHelper(ContactActivity.this);
+        if(db.deleteData(contact.getId())){
+            Toast.makeText(getApplicationContext(),"Contact deleted successfully!",Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(),"Unable to delete contact!",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void shareContact(){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT,contact.getFname() + " " + contact.getLName());
+        String message = "Name: " + contact.getFname() ;
+        if(!contact.getLName().isEmpty()){
+            message = message + " " + contact.getLName();
+        }
+        message = message + "\nMobile: " + contact.getMobile() + "\n";
+        if(contact.getWork() != 0){
+            message = message + "Work: " + contact.getWork() + "\n";
+        }
+        if(!contact.getEmail().isEmpty()){
+            message = message + "Email: " + contact.getEmail() + "\n";
+        }
+        if(contact.getCustom1() != 0){
+            message = message + "Custom1: " + contact.getCustom1() + "\n";
+        }
+        if(contact.getCustom2() != 0){
+            message = message + "Custom2: " + contact.getCustom2() + "\n";
+        }
+        if(contact.getCustom3() != 0){
+            message = message + "Custom3: " + contact.getCustom3() + "\n";
+        }
+        i.putExtra(Intent.EXTRA_TEXT,message);
+        startActivity(Intent.createChooser(i,"Share contact"));
+
     }
 
     private void editContact() {

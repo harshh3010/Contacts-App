@@ -50,33 +50,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(Contact contact){
+    public boolean addData(Contact contact) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2,contact.getFname());
-        contentValues.put(COL_3,contact.getLName());
-        contentValues.put(COL_4,contact.getMobile());
-        contentValues.put(COL_5,contact.getWork());
-        contentValues.put(COL_6,contact.getEmail());
-        contentValues.put(COL_7,contact.getCustom1());
-        contentValues.put(COL_8,contact.getCustom2());
-        contentValues.put(COL_9,contact.getCustom3());
-        long result = db.insert(TABLE_NAME,null,contentValues);
-        if(result == -1){
+        contentValues.put(COL_2, contact.getFname());
+        contentValues.put(COL_3, contact.getLName());
+        contentValues.put(COL_4, contact.getMobile());
+        contentValues.put(COL_5, contact.getWork());
+        contentValues.put(COL_6, contact.getEmail());
+        contentValues.put(COL_7, contact.getCustom1());
+        contentValues.put(COL_8, contact.getCustom2());
+        contentValues.put(COL_9, contact.getCustom3());
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        if (result == -1) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    public ArrayList<Contact> getData(){
+    public ArrayList<Contact> getData() {
 
         ArrayList<Contact> contacts = new ArrayList<>();
 
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
-        if(cursor.moveToFirst()){
-            while (cursor.moveToNext()){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
                 Contact contact = new Contact();
                 contact.setId(cursor.getString(cursor.getColumnIndex(COL_1)));
                 contact.setFname(cursor.getString(cursor.getColumnIndex(COL_2)));
@@ -94,18 +94,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return contacts;
     }
 
-    public boolean updateData(Contact contact){
+    public boolean updateData(Contact contact) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_2,contact.getFname());
-        contentValues.put(COL_3,contact.getLName());
-        contentValues.put(COL_4,contact.getMobile());
-        contentValues.put(COL_5,contact.getWork());
-        contentValues.put(COL_6,contact.getEmail());
-        contentValues.put(COL_7,contact.getCustom1());
-        contentValues.put(COL_8,contact.getCustom2());
-        contentValues.put(COL_9,contact.getCustom3());
-        db.update(TABLE_NAME,contentValues,COL_1 + "=?",new String[]{contact.getId()});
+        contentValues.put(COL_2, contact.getFname());
+        contentValues.put(COL_3, contact.getLName());
+        contentValues.put(COL_4, contact.getMobile());
+        contentValues.put(COL_5, contact.getWork());
+        contentValues.put(COL_6, contact.getEmail());
+        contentValues.put(COL_7, contact.getCustom1());
+        contentValues.put(COL_8, contact.getCustom2());
+        contentValues.put(COL_9, contact.getCustom3());
+        db.update(TABLE_NAME, contentValues, COL_1 + "=?", new String[]{contact.getId()});
         return true;
+    }
+
+    public boolean deleteData(String id) {
+        SQLiteDatabase db = getWritableDatabase();
+        int res = db.delete(TABLE_NAME, COL_1 + "=?", new String[]{id});
+        if (res <= 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
