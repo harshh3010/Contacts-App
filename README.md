@@ -4,7 +4,7 @@ An android app to create and store contacts.
 <br>
 ### Main Activity
 <br>
-<img src="https://github.com/harshh3010/Contacts-App/blob/master/AppScreenshots/MainActivity.png" width="300px" >
+<img src="https://github.com/harshh3010/Contacts-App/blob/master/AppScreenshots/MainActivity.png" width="300px">
 <img src="https://github.com/harshh3010/Contacts-App/blob/master/AppScreenshots/SearchBar.png" width="300px">
 <br>
 
