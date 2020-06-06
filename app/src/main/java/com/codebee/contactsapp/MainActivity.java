@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
     private void displayContacts(){
         DatabaseHelper db = new DatabaseHelper(MainActivity.this);
         ArrayList<Contact> contacts = db.getData();
+
+        Collections.sort(contacts, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact o1, Contact o2) {
+                String name1 = o1.getFname() + " " + o1.getLName();
+                String name2 = o2.getFname() + " " + o2.getLName();
+                return name1.compareTo(name2);
+            }
+        });
+
         adapter = new ContactAdapter(contacts);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
