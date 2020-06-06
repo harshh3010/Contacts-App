@@ -13,7 +13,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +37,23 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.contacts_recycler_view);
 
         displayContacts();
+
+        ((EditText)findViewById(R.id.contacts_search_text)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
+            }
+        });
 
         addContact();
     }
